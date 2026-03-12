@@ -60,10 +60,18 @@ func main() {
 		&domain.Role{},
 		&domain.Department{},
 		&domain.Menu{},
+		&domain.Permission{},
 		&domain.Customer{},
 		&domain.Contact{},
 		&domain.Contract{},
 		&domain.APIKey{},
+		&domain.FollowRecord{},
+		&domain.Opportunity{},
+		&domain.Payment{},
+		&domain.Product{},
+		&domain.Invoice{},
+		&domain.UserRole{},
+		&domain.RolePermission{},
 	); err != nil {
 		logger.Fatal("数据库迁移失败", zap.Error(err))
 	}
@@ -163,6 +171,35 @@ func setupRoutes(r *gin.Engine, handlers *handler.Handler, cfg *config.Config, r
 	authProtected.Use(middleware.JWTAuth(cfg))
 	{
 		authProtected.GET("/me", handlers.Auth.GetMe)
+	}
+
+	// RBAC 权限管理
+	rbac := r.Group("/api")
+	rbac.Use(middleware.JWTAuth(cfg))
+	{
+		// 角色管理
+		rbac.POST("/roles", handlers.RBAC.CreateRole)
+		rbac.GET("/roles", handlers.RBAC.ListRoles)
+		rbac.POST("/roles/:id/permissions", handlers.RBAC.AssignPermissions)
+		
+		// 权限管理
+		rbac.POST("/permissions", handlers.RBAC.CreatePermission)
+		rbac.GET("/permissions", handlers.RBAC.ListPermissions)
+		
+		// 用户角色分配
+		rbac.POST("/users/:id/roles", handlers.RBAC.AssignRolesToUser)
+		rbac.GET("/users/:id/permissions", handlers.RBAC.GetUserPermissions)
+	}
+
+	// 跟进记录
+	follow := r.Group("/api")
+	follow.Use(middleware.JWTAuth(cfg))
+	{
+		follow.GET("/follow-records", handlers.FollowRecord.List)
+		follow.POST("/follow-records", handlers.FollowRecord.Create)
+		follow.GET("/follow-records/:id", handlers.FollowRecord.Get)
+		follow.PUT("/follow-records/:id", handlers.FollowRecord.Update)
+		follow.DELETE("/follow-records/:id", handlers.FollowRecord.Delete)
 	}
 
 	// 内部 API（JWT 认证）
