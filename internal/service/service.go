@@ -30,6 +30,10 @@ type Service struct {
 	Payment      PaymentService
 	// Report 报表服务
 	Report       ReportService
+	// Notification 通知服务
+	Notification NotificationService
+	// OperationLog 操作日志服务
+	OperationLog OperationLogService
 }
 
 // NewService 创建服务聚合实例
@@ -61,5 +65,9 @@ func NewService(repos *repository.Repository, cfg *config.Config) *Service {
 		Payment:      NewPaymentService(repos.Payment),
 		// 创建报表服务
 		Report:       NewReportService(repos.Customer, repos.Opportunity, repos.Contract, repos.Payment),
+		// 创建通知服务
+		Notification: NewNotificationService(repos.Notification),
+		// 创建操作日志服务
+		OperationLog: NewOperationLogService(repos.OperationLog),
 	}
 }

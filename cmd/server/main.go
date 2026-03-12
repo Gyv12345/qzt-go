@@ -72,6 +72,8 @@ func main() {
 		&domain.Invoice{},
 		&domain.UserRole{},
 		&domain.RolePermission{},
+		&domain.Notification{},
+		&domain.OperationLog{},
 	); err != nil {
 		logger.Fatal("数据库迁移失败", zap.Error(err))
 	}
@@ -236,6 +238,27 @@ func setupRoutes(r *gin.Engine, handlers *handler.Handler, cfg *config.Config, r
 		report.GET("/payments", handlers.Report.GetPaymentStats)
 		report.GET("/customers", handlers.Report.GetCustomerStats)
 	}
+
+	// 通知管理
+	notify := r.Group("/api/notifications")
+	notify.Use(middleware.JWTAuth(cfg))
+	{
+		notify.GET("", handlers.Notification.List)
+		notify.GET("/unread-count", handlers.Notification.GetUnreadCount)
+		notify.POST("/:id/read", handlers.Notification.MarkAsRead)
+		notify.POST("/read-all", handlers.Notification.MarkAllAsRead)
+		notify.DELETE("/:id", handlers.Notification.Delete)
+	}
+
+	// 操作日志
+	logs := r.Group("/api/operation-logs")
+	logs.Use(middleware.JWTAuth(cfg))
+	{
+		logs.GET("", handlers.OperationLog.List)
+	}
+
+	// 全局中间件
+	r.Use(middleware.OperationLogger(services.OperationLog))
 
 	// 内部 API（JWT 认证）
 	api := r.Group("/api")

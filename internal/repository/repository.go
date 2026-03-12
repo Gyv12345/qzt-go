@@ -19,6 +19,8 @@ type Repository struct {
 	FollowRecord FollowRecordRepository
 	Opportunity  OpportunityRepository
 	Payment      PaymentRepository
+	Notification NotificationRepository
+	OperationLog OperationLogRepository
 }
 
 // NewRepository 创建仓储聚合实例
@@ -34,6 +36,8 @@ func NewRepository(db *gorm.DB) *Repository {
 		FollowRecord: NewFollowRecordRepository(db),
 		Opportunity:  NewOpportunityRepository(db),
 		Payment:      NewPaymentRepository(db),
+		Notification: NewNotificationRepository(db),
+		OperationLog: NewOperationLogRepository(db),
 	}
 }
 

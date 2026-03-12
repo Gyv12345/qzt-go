@@ -46,6 +46,8 @@ type Handler struct {
 	Opportunity  *OpportunityHandler  // 商机处理器
 	Payment      *PaymentHandler      // 回款处理器
 	Report       *ReportHandler       // 报表处理器
+	Notification *NotificationHandler // 通知处理器
+	OperationLog *OperationLogHandler // 操作日志处理器
 }
 
 // NewHandler 创建处理器容器实例
@@ -79,5 +81,7 @@ func NewHandler(svc *service.Service) *Handler {
 		Opportunity:  NewOpportunityHandler(svc.Opportunity),         // 创建商机处理器
 		Payment:      NewPaymentHandler(svc.Payment),                 // 创建回款处理器
 		Report:       NewReportHandler(svc.Report),                   // 创建报表处理器
+		Notification: NewNotificationHandler(svc.Notification),       // 创建通知处理器
+		OperationLog: NewOperationLogHandler(svc.OperationLog),       // 创建操作日志处理器
 	}
 }
