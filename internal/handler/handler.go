@@ -36,11 +36,13 @@ import (
 //   // 使用客户处理器
 //   r.GET("/customers", handlers.Customer.List)
 type Handler struct {
-	Auth     *AuthHandler     // 认证处理器（登录、注册、刷新令牌）
-	Customer *CustomerHandler // 客户处理器（客户 CRUD 操作）
-	Contact  *ContactHandler  // 联系人处理器（联系人 CRUD 操作）
-	Contract *ContractHandler // 合同处理器（合同 CRUD 操作）
-	APIKey   *APIKeyHandler   // API Key 处理器（API Key 管理）
+	Auth         *AuthHandler         // 认证处理器（登录、注册、刷新令牌）
+	Customer     *CustomerHandler     // 客户处理器（客户 CRUD 操作）
+	Contact      *ContactHandler      // 联系人处理器（联系人 CRUD 操作）
+	Contract     *ContractHandler     // 合同处理器（合同 CRUD 操作）
+	APIKey       *APIKeyHandler       // API Key 处理器（API Key 管理）
+	RBAC         *RBACHandler         // RBAC 处理器（角色权限管理）
+	FollowRecord *FollowRecordHandler // 跟进记录处理器
 }
 
 // NewHandler 创建处理器容器实例
@@ -64,10 +66,12 @@ type Handler struct {
 //   r.GET("/api/customers", handlers.Customer.List)
 func NewHandler(svc *service.Service) *Handler {
 	return &Handler{
-		Auth:     NewAuthHandler(svc.Auth),         // 创建认证处理器
-		Customer: NewCustomerHandler(svc.Customer), // 创建客户处理器
-		Contact:  NewContactHandler(svc.Contact),   // 创建联系人处理器
-		Contract: NewContractHandler(svc.Contract), // 创建合同处理器
-		APIKey:   NewAPIKeyHandler(svc.APIKey),     // 创建 API Key 处理器
+		Auth:         NewAuthHandler(svc.Auth),                       // 创建认证处理器
+		Customer:     NewCustomerHandler(svc.Customer),               // 创建客户处理器
+		Contact:      NewContactHandler(svc.Contact),                 // 创建联系人处理器
+		Contract:     NewContractHandler(svc.Contract),               // 创建合同处理器
+		APIKey:       NewAPIKeyHandler(svc.APIKey),                   // 创建 API Key 处理器
+		RBAC:         NewRBACHandler(svc.RBAC),                       // 创建 RBAC 处理器
+		FollowRecord: NewFollowRecordHandler(svc.FollowRecord),       // 创建跟进记录处理器
 	}
 }

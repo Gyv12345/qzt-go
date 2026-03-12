@@ -11,15 +11,19 @@ import (
 // 聚合了所有业务服务接口，便于统一管理和依赖注入
 type Service struct {
 	// Auth 认证服务（登录、注册、令牌刷新）
-	Auth     AuthService
+	Auth         AuthService
 	// Customer 客户服务（客户管理）
-	Customer CustomerService
+	Customer     CustomerService
 	// Contact 联系人服务（联系人管理）
-	Contact  ContactService
+	Contact      ContactService
 	// Contract 合同服务（合同管理）
-	Contract ContractService
+	Contract     ContractService
 	// APIKey API Key 服务（第三方接口认证）
-	APIKey   APIKeyService
+	APIKey       APIKeyService
+	// RBAC 权限服务（角色权限管理）
+	RBAC         RBACService
+	// FollowRecord 跟进记录服务
+	FollowRecord FollowRecordService
 }
 
 // NewService 创建服务聚合实例
@@ -32,14 +36,18 @@ type Service struct {
 func NewService(repos *repository.Repository, cfg *config.Config) *Service {
 	return &Service{
 		// 创建认证服务，注入用户仓储和配置
-		Auth:     NewAuthService(repos.User, cfg),
+		Auth:         NewAuthService(repos.User, cfg),
 		// 创建客户服务，注入客户仓储
-		Customer: NewCustomerService(repos.Customer),
+		Customer:     NewCustomerService(repos.Customer),
 		// 创建联系人服务，注入联系人仓储
-		Contact:  NewContactService(repos.Contact),
+		Contact:      NewContactService(repos.Contact),
 		// 创建合同服务，注入合同仓储
-		Contract: NewContractService(repos.Contract),
+		Contract:     NewContractService(repos.Contract),
 		// 创建 API Key 服务，注入 API Key 仓储和配置
-		APIKey:   NewAPIKeyService(repos.APIKey, cfg),
+		APIKey:       NewAPIKeyService(repos.APIKey, cfg),
+		// 创建 RBAC 服务，注入角色、权限、用户仓储
+		RBAC:         NewRBACService(repos.Role, repos.Permission, repos.User),
+		// 创建跟进记录服务
+		FollowRecord: NewFollowRecordService(repos.FollowRecord),
 	}
 }
