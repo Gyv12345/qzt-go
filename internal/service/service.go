@@ -36,6 +36,8 @@ type Service struct {
 	Notification NotificationService
 	// OperationLog 操作日志服务
 	OperationLog OperationLogService
+	// ImportExport 导入导出服务
+	ImportExport ImportExportService
 }
 
 // NewService 创建服务聚合实例
@@ -73,5 +75,7 @@ func NewService(repos *repository.Repository, cfg *config.Config) *Service {
 		Notification: NewNotificationService(repos.Notification),
 		// 创建操作日志服务
 		OperationLog: NewOperationLogService(repos.OperationLog),
+		// 创建导入导出服务
+		ImportExport: NewImportExportService(repos.Customer, repos.Opportunity, repos.Contract, repos.Payment),
 	}
 }

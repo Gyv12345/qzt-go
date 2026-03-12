@@ -274,6 +274,24 @@ func setupRoutes(r *gin.Engine, handlers *handler.Handler, cfg *config.Config, r
 		logs.GET("", handlers.OperationLog.List)
 	}
 
+	// 导入导出
+	importExport := r.Group("/api/import-export")
+	importExport.Use(middleware.JWTAuth(cfg))
+	{
+		importExport.GET("/customers", handlers.ImportExport.ExportCustomers)
+		importExport.POST("/customers/import", handlers.ImportExport.ImportCustomers)
+		importExport.GET("/opportunities", handlers.ImportExport.ExportOpportunities)
+		importExport.POST("/opportunities/import", handlers.ImportExport.ImportOpportunities)
+		importExport.GET("/contracts", handlers.ImportExport.ExportContracts)
+		importExport.POST("/contracts/import", handlers.ImportExport.ImportContracts)
+		importExport.GET("/payments", handlers.ImportExport.ExportPayments)
+		importExport.POST("/payments/import", handlers.ImportExport.ImportPayments)
+		
+		// 批量操作
+		importExport.POST("/customers/batch-delete", handlers.ImportExport.BatchDeleteCustomers)
+		importExport.POST("/customers/batch-update", handlers.ImportExport.BatchUpdateCustomers)
+	}
+
 	// 全局中间件
 	r.Use(middleware.OperationLogger(services.OperationLog))
 

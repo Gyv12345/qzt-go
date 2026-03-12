@@ -49,6 +49,7 @@ type Handler struct {
 	Report       *ReportHandler       // 报表处理器
 	Notification *NotificationHandler // 通知处理器
 	OperationLog *OperationLogHandler // 操作日志处理器
+	ImportExport *ImportExportHandler // 导入导出处理器
 }
 
 // NewHandler 创建处理器容器实例
@@ -85,5 +86,6 @@ func NewHandler(svc *service.Service) *Handler {
 		Report:       NewReportHandler(svc.Report),                   // 创建报表处理器
 		Notification: NewNotificationHandler(svc.Notification),       // 创建通知处理器
 		OperationLog: NewOperationLogHandler(svc.OperationLog),       // 创建操作日志处理器
+		ImportExport: NewImportExportHandler(svc.ImportExport),         // 创建导入导出处理器
 	}
 }
