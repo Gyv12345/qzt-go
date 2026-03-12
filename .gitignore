@@ -1,0 +1,60 @@
+# 二进制文件
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 测试文件
+*.test
+*.out
+coverage.out
+
+# Go 工作空间
+go.work
+go.sum
+
+# IDE 配置
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 环境变量
+.env
+.env.local
+*.env
+
+# 配置文件（敏感信息）
+config/config.local.yaml
+
+# 日志文件
+logs/
+*.log
+
+# 依赖目录
+vendor/
+**/node_modules/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 临时文件
+tmp/
+temp/
+
+# 数据库文件
+*.db
+*.sqlite
+
+# 编译产物
+dist/
+build/
+
+# 前端构建
+frontend/dist/
+frontend/.next/
+frontend/.cache/

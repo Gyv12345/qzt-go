@@ -1,0 +1,66 @@
+# QZT 后端服务配置
+
+# HTTP 服务器配置
+server:
+  port: 8080
+  mode: debug  # debug 或 release
+
+# 数据库配置（PostgreSQL）
+database:
+  driver: postgres
+  host: localhost
+  port: 5432
+  username: postgres
+  password: postgres
+  database: qzt
+  max_idle_conns: 10
+  max_open_conns: 100
+  sslmode: disable
+
+# JWT 配置
+jwt:
+  secret: your-jwt-secret-key-change-in-production
+  expire: 24h
+  refresh_expire: 168h
+
+# API Key 配置
+apikey:
+  secret: your-apikey-secret-key-change-in-production
+  default_rate_limit: 1000  # 每分钟请求数
+
+# Redis 配置
+redis:
+  host: localhost
+  port: 6379
+  password: "123456"
+  db: 0
+  pool_size: 10
+
+# 日志配置
+log:
+  level: info  # debug, info, warn, error
+  format: console  # json 或 console
+  output: stdout
+  file: logs/app.log
+
+# CORS 配置
+cors:
+  allow_origins:
+    - http://localhost:3000
+    - http://localhost:5173
+  allow_methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allow_headers:
+    - Content-Type
+    - Authorization
+    - X-API-Key
+    - X-Request-ID
+  expose_headers:
+    - Content-Length
+    - X-Request-ID
+  allow_credentials: true
+  max_age: 86400
