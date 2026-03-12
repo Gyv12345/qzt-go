@@ -45,6 +45,7 @@ type Handler struct {
 	FollowRecord *FollowRecordHandler // 跟进记录处理器
 	Opportunity  *OpportunityHandler  // 商机处理器
 	Payment      *PaymentHandler      // 回款处理器
+	Report       *ReportHandler       // 报表处理器
 }
 
 // NewHandler 创建处理器容器实例
@@ -77,5 +78,6 @@ func NewHandler(svc *service.Service) *Handler {
 		FollowRecord: NewFollowRecordHandler(svc.FollowRecord),       // 创建跟进记录处理器
 		Opportunity:  NewOpportunityHandler(svc.Opportunity),         // 创建商机处理器
 		Payment:      NewPaymentHandler(svc.Payment),                 // 创建回款处理器
+		Report:       NewReportHandler(svc.Report),                   // 创建报表处理器
 	}
 }

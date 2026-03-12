@@ -226,6 +226,17 @@ func setupRoutes(r *gin.Engine, handlers *handler.Handler, cfg *config.Config, r
 		payment.POST("/payments/:id/confirm", handlers.Payment.Confirm)
 	}
 
+	// 报表统计
+	report := r.Group("/api/reports")
+	report.Use(middleware.JWTAuth(cfg))
+	{
+		report.GET("/dashboard", handlers.Report.GetDashboard)
+		report.GET("/sales-funnel", handlers.Report.GetSalesFunnel)
+		report.GET("/performance", handlers.Report.GetPerformance)
+		report.GET("/payments", handlers.Report.GetPaymentStats)
+		report.GET("/customers", handlers.Report.GetCustomerStats)
+	}
+
 	// 内部 API（JWT 认证）
 	api := r.Group("/api")
 	api.Use(middleware.JWTAuth(cfg))
