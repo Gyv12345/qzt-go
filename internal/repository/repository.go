@@ -19,6 +19,7 @@ type Repository struct {
 	FollowRecord FollowRecordRepository
 	Opportunity  OpportunityRepository
 	Payment      PaymentRepository
+	Invoice      InvoiceRepository
 	Notification NotificationRepository
 	OperationLog OperationLogRepository
 }
@@ -36,6 +37,7 @@ func NewRepository(db *gorm.DB) *Repository {
 		FollowRecord: NewFollowRecordRepository(db),
 		Opportunity:  NewOpportunityRepository(db),
 		Payment:      NewPaymentRepository(db),
+		Invoice:      NewInvoiceRepository(db),
 		Notification: NewNotificationRepository(db),
 		OperationLog: NewOperationLogRepository(db),
 	}

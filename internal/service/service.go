@@ -28,6 +28,8 @@ type Service struct {
 	Opportunity  OpportunityService
 	// Payment 回款服务
 	Payment      PaymentService
+	// Invoice 发票服务
+	Invoice      InvoiceService
 	// Report 报表服务
 	Report       ReportService
 	// Notification 通知服务
@@ -63,6 +65,8 @@ func NewService(repos *repository.Repository, cfg *config.Config) *Service {
 		Opportunity:  NewOpportunityService(repos.Opportunity, repos.Customer, repos.Contract),
 		// 创建回款服务
 		Payment:      NewPaymentService(repos.Payment),
+		// 创建发票服务
+		Invoice:      NewInvoiceService(repos.Invoice, repos.Contract, repos.Payment),
 		// 创建报表服务
 		Report:       NewReportService(repos.Customer, repos.Opportunity, repos.Contract, repos.Payment),
 		// 创建通知服务

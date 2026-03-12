@@ -228,6 +228,23 @@ func setupRoutes(r *gin.Engine, handlers *handler.Handler, cfg *config.Config, r
 		payment.POST("/payments/:id/confirm", handlers.Payment.Confirm)
 	}
 
+	// 发票管理
+	invoice := r.Group("/api")
+	invoice.Use(middleware.JWTAuth(cfg))
+	{
+		invoice.GET("/invoices", handlers.Invoice.List)
+		invoice.POST("/invoices", handlers.Invoice.Create)
+		invoice.GET("/invoices/:id", handlers.Invoice.Get)
+		invoice.PUT("/invoices/:id", handlers.Invoice.Update)
+		invoice.DELETE("/invoices/:id", handlers.Invoice.Delete)
+		invoice.POST("/invoices/:id/submit", handlers.Invoice.Submit)
+		invoice.POST("/invoices/:id/approve", handlers.Invoice.Approve)
+		invoice.POST("/invoices/:id/reject", handlers.Invoice.Reject)
+		invoice.POST("/invoices/:id/invoice", handlers.Invoice.Invoice)
+		invoice.POST("/invoices/:id/receive", handlers.Invoice.Receive)
+		invoice.GET("/invoices/stats", handlers.Invoice.GetStats)
+	}
+
 	// 报表统计
 	report := r.Group("/api/reports")
 	report.Use(middleware.JWTAuth(cfg))
