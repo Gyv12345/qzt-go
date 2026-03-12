@@ -43,6 +43,8 @@ type Handler struct {
 	APIKey       *APIKeyHandler       // API Key 处理器（API Key 管理）
 	RBAC         *RBACHandler         // RBAC 处理器（角色权限管理）
 	FollowRecord *FollowRecordHandler // 跟进记录处理器
+	Opportunity  *OpportunityHandler  // 商机处理器
+	Payment      *PaymentHandler      // 回款处理器
 }
 
 // NewHandler 创建处理器容器实例
@@ -73,5 +75,7 @@ func NewHandler(svc *service.Service) *Handler {
 		APIKey:       NewAPIKeyHandler(svc.APIKey),                   // 创建 API Key 处理器
 		RBAC:         NewRBACHandler(svc.RBAC),                       // 创建 RBAC 处理器
 		FollowRecord: NewFollowRecordHandler(svc.FollowRecord),       // 创建跟进记录处理器
+		Opportunity:  NewOpportunityHandler(svc.Opportunity),         // 创建商机处理器
+		Payment:      NewPaymentHandler(svc.Payment),                 // 创建回款处理器
 	}
 }

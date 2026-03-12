@@ -24,6 +24,10 @@ type Service struct {
 	RBAC         RBACService
 	// FollowRecord 跟进记录服务
 	FollowRecord FollowRecordService
+	// Opportunity 商机服务
+	Opportunity  OpportunityService
+	// Payment 回款服务
+	Payment      PaymentService
 }
 
 // NewService 创建服务聚合实例
@@ -49,5 +53,9 @@ func NewService(repos *repository.Repository, cfg *config.Config) *Service {
 		RBAC:         NewRBACService(repos.Role, repos.Permission, repos.User),
 		// 创建跟进记录服务
 		FollowRecord: NewFollowRecordService(repos.FollowRecord),
+		// 创建商机服务
+		Opportunity:  NewOpportunityService(repos.Opportunity, repos.Customer, repos.Contract),
+		// 创建回款服务
+		Payment:      NewPaymentService(repos.Payment),
 	}
 }

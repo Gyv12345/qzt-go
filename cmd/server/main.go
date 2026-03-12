@@ -202,6 +202,30 @@ func setupRoutes(r *gin.Engine, handlers *handler.Handler, cfg *config.Config, r
 		follow.DELETE("/follow-records/:id", handlers.FollowRecord.Delete)
 	}
 
+	// 商机管理
+	opp := r.Group("/api")
+	opp.Use(middleware.JWTAuth(cfg))
+	{
+		opp.GET("/opportunities", handlers.Opportunity.List)
+		opp.POST("/opportunities", handlers.Opportunity.Create)
+		opp.GET("/opportunities/:id", handlers.Opportunity.Get)
+		opp.PUT("/opportunities/:id", handlers.Opportunity.Update)
+		opp.DELETE("/opportunities/:id", handlers.Opportunity.Delete)
+		opp.POST("/opportunities/:id/next-stage", handlers.Opportunity.MoveToNextStage)
+		opp.POST("/opportunities/:id/prev-stage", handlers.Opportunity.MoveToPrevStage)
+		opp.POST("/opportunities/:id/convert", handlers.Opportunity.ConvertToContract)
+		opp.GET("/opportunities/stats/stage", handlers.Opportunity.GetStageStats)
+	}
+
+	// 回款管理
+	payment := r.Group("/api")
+	payment.Use(middleware.JWTAuth(cfg))
+	{
+		payment.GET("/payments", handlers.Payment.List)
+		payment.POST("/payments", handlers.Payment.Create)
+		payment.POST("/payments/:id/confirm", handlers.Payment.Confirm)
+	}
+
 	// 内部 API（JWT 认证）
 	api := r.Group("/api")
 	api.Use(middleware.JWTAuth(cfg))

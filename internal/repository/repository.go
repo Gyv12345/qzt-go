@@ -17,6 +17,8 @@ type Repository struct {
 	Contract     ContractRepository
 	APIKey       APIKeyRepository
 	FollowRecord FollowRecordRepository
+	Opportunity  OpportunityRepository
+	Payment      PaymentRepository
 }
 
 // NewRepository 创建仓储聚合实例
@@ -30,6 +32,8 @@ func NewRepository(db *gorm.DB) *Repository {
 		Contract:     NewContractRepository(db),
 		APIKey:       NewAPIKeyRepository(db),
 		FollowRecord: NewFollowRecordRepository(db),
+		Opportunity:  NewOpportunityRepository(db),
+		Payment:      NewPaymentRepository(db),
 	}
 }
 
