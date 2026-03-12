@@ -139,3 +139,33 @@ func (h *AuthHandler) RefreshToken(c *gin.Context) {
 	// 刷新成功，返回新的令牌信息
 	c.JSON(http.StatusOK, result)
 }
+
+// GetMe 获取当前用户信息
+// 处理 GET /api/auth/me 请求
+// 返回当前登录用户的详细信息
+//
+// godoc
+// @Summary 获取当前用户信息
+// @Tags 认证
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Failure 401 {object} map[string]string
+// @Router /api/auth/me [get]
+func (h *AuthHandler) GetMe(c *gin.Context) {
+	// 从上下文获取用户 ID
+	userID, exists := c.Get("userId")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "未授权"})
+		return
+	}
+
+	// 调用服务获取用户信息
+	user, err := h.svc.GetUserInfo(c.Request.Context(), userID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}

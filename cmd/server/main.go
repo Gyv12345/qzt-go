@@ -158,6 +158,13 @@ func setupRoutes(r *gin.Engine, handlers *handler.Handler, cfg *config.Config, r
 		auth.POST("/refresh", handlers.Auth.RefreshToken)
 	}
 
+	// 需要认证的路由
+	authProtected := r.Group("/api/auth")
+	authProtected.Use(middleware.JWTAuth(cfg))
+	{
+		authProtected.GET("/me", handlers.Auth.GetMe)
+	}
+
 	// 内部 API（JWT 认证）
 	api := r.Group("/api")
 	api.Use(middleware.JWTAuth(cfg))

@@ -26,11 +26,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 3456,
     proxy: {
-      // /api 前缀的请求代理到后端，并去掉 /api 前缀
+      // /api 前缀的请求代理到 Go 后端
       "/api": {
-        target: "http://localhost:7890",
+        target: "http://localhost:8080",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        // 不去掉 /api 前缀，直接转发
       },
     },
   },

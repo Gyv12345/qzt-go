@@ -26,6 +26,9 @@ type AuthService interface {
 	// RefreshToken 刷新令牌
 	// 使用刷新令牌获取新的访问令牌
 	RefreshToken(ctx context.Context, refreshToken string) (*LoginResult, error)
+	// GetUserInfo 获取用户信息
+	// 根据 ID 获取用户详细信息
+	GetUserInfo(ctx context.Context, userID string) (interface{}, error)
 }
 
 // authService 认证服务实现
@@ -256,5 +259,31 @@ func (s *authService) RefreshToken(ctx context.Context, refreshToken string) (*L
 		RefreshToken: newRefreshTokenString,
 		ExpiresAt:    expiresAt.Unix(),
 		User:         user,
+	}, nil
+}
+
+// GetUserInfo 获取用户信息
+// 根据用户 ID 获取用户详细信息
+// 参数：
+//   - ctx: 上下文
+//   - userID: 用户 ID
+// 返回值：
+//   - interface{}: 用户信息
+//   - error: 错误信息
+func (s *authService) GetUserInfo(ctx context.Context, userID string) (interface{}, error) {
+	user, err := s.userRepo.GetByID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 返回用户信息（不包含密码）
+	return map[string]interface{}{
+		"id":        user.ID,
+		"username":  user.Username,
+		"realName":  user.RealName,
+		"email":     user.Email,
+		"phone":     user.Mobile,
+		"status":    user.Status,
+		"createdAt": user.CreatedAt,
 	}, nil
 }
